@@ -22,6 +22,6 @@ public class Vector implements Comparable<Vector> {
 	@Override
 	public int compareTo(Vector o) {
 		// TODO Auto-generated method stub
-		return 0;
+		return this.distance.compareTo(o.distance);
 	}
 }

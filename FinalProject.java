@@ -44,21 +44,47 @@ public class FinalProject {
 		Collections.shuffle(Data, new Random(13));
 		ArrayList<Vector> trainingData = new ArrayList<Vector>(Data.subList(0, (Data.size() / 3 * 2)));
 		ArrayList<Vector> testingData = new ArrayList<Vector>(Data.subList((Data.size() / 3 * 2), Data.size() - 1));
+      kNearestNeighbor knn;
 		
-		kNearestNeighbor knn = new kNearestNeighbor(userHam, trainingData, 9);
-		String result = (knn.predictClassifier() == 1) ? "Spam" : "Not Spam";
+		// kNearestNeighbor knn = new kNearestNeighbor(userHam, trainingData, 9);
+		// String result = (knn.predictClassifier() == 1) ? "Spam" : "Not Spam";
 		//System.out.println("This review is " + result);
 		
 		for(int k = 1; k <= 99; k+= 2) {
 			int numCorrect = 0;
+         int tp, fp, fn, tn;
+
+         tp = fp = fn = tn = 0;
+
+         knn = new kNearestNeighbor(trainingData, k);
 			for(Vector v : testingData) {
-				knn = new kNearestNeighbor(v, trainingData, k);
-				if(knn.predictClassifier() == v.classifier)
-					numCorrect += 1;
+            double expected = v.classifier;
+            double actual = knn.predictClassifier(v);
+
+            if (expected == 1) {
+               if (actual == 0) {
+                  // False Negative
+                  ++fn;
+               } else {
+                  // True Positive
+                  ++tp;
+               }
+            } else {
+               if (actual == 0) {
+                  // True Negative
+                  ++tn;
+               } else {
+                  // False Positive
+                  ++fp;
+               }
+            }
 			}
-			System.out.println("With k = " + k + 
-							   " the program had " + numCorrect + 
-							   " out of " + testingData.size() + " correct.");
+
+         System.out.println("Ran the test suite with k = " + k + " on " + testingData.size() + " entries with " + trainingData.size() + " known values:");
+         System.out.println("True Positive: " + tp);
+         System.out.println("False Positive: " + fp);
+         System.out.println("False Negative: " + fn);
+         System.out.println("True Negative: " + tn);
 		}
 	}
 }

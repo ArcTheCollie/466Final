@@ -1,12 +1,13 @@
-import java.util.ArrayList; 
+import java.util.ArrayList;
+import java.util.List; 
 
 public class Vector implements Comparable<Vector> {
-	ArrayList<Integer> points;
-	Integer classifier;
+	ArrayList<Double> points;
+	Double classifier;
 	Double distance;
 	
-	public Vector(ArrayList<Integer> dataRow) {
-		this.points = new ArrayList<Integer>();
+	public Vector(List<Double> dataRow) {
+		this.points = new ArrayList<Double>();
 		for(int i = 0; i < dataRow.size() - 2; i ++) {
 			points.add(dataRow.get(i));
 		}
@@ -14,7 +15,7 @@ public class Vector implements Comparable<Vector> {
 	}
 	
 	/*Write a function that takes in a vector and returns the distance.*/
-	public void computeDistance(ArrayList<Integer> vectorB) {
+	public void computeDistance(ArrayList<Double> vectorB) {
 		if(vectorB.size() != points.size())
 			System.out.println("Something is wrong with the vector sizes.");
 		Double dist = 0.0;

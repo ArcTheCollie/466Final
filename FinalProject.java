@@ -1,31 +1,46 @@
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
-
-import javax.xml.crypto.Data;
+import java.util.Arrays;
 
 /*This is a test.*/
 
 public class FinalProject {
-	
-	/*this function takes in user input, creating and returning the base vector*/
-	static Vector createUserInput() {
-		return null;
-	}
-	
-	/*this function will take the initial data and pre-process, changing all the lists to 
-	 * vectors and get it ready for the algorithm*/
-	static void preprocess() {
-		
-	}
+	static Vector userSpam = new Vector(Arrays.asList(0.0, 2.0, 2.0, 15.2361723, 1.0));
+	static Vector userHam = new Vector(Arrays.asList(1.0, 0.0, 0.0, 15.2361723, 0.0));
+	static ArrayList<Vector> testingData = new ArrayList<Vector>();
 	
 	/*This function will take in a file name and store the data to a 2-d list;*/
 	static void parseData(String filename) {
-		ArrayList<ArrayList<Integer>> dataRows = new ArrayList<ArrayList<Integer>>();
+		try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
+		    
+			String line;
+		    String[] tokens;
+		    ArrayList<Double> temp;
+		    
+		    while ((line = br.readLine()) != null) {
+		    	temp = new ArrayList<Double>();
+		    	tokens = line.split(",");
+		    	System.out.println(tokens);
+		    	for(String s : tokens) {
+		    		temp.add(Double.parseDouble(s));
+		    	}
+		    	testingData.add(new Vector(temp));
+		    }
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public static void main(String[] args) {
-		parseData("temp");
-		preprocess();
-		Vector base = createUserInput();
-		kNearestNeighbor knn = new kNearestNeighbor(base, testingData, k);
+		parseData("input.csv");
+		kNearestNeighbor knn = new kNearestNeighbor(userHam, testingData, 9);
+		knn.predictClassifier();
 	}
 }

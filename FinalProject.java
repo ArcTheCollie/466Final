@@ -25,7 +25,6 @@ public class FinalProject {
 		    while ((line = br.readLine()) != null) {
 		    	temp = new ArrayList<Double>();
 		    	tokens = line.split(",");
-		    	System.out.println(tokens);
 		    	for(String s : tokens) {
 		    		temp.add(Double.parseDouble(s));
 		    	}
@@ -50,12 +49,16 @@ public class FinalProject {
 		String result = (knn.predictClassifier() == 1) ? "Spam" : "Not Spam";
 		//System.out.println("This review is " + result);
 		
-		int numCorrect = 0;
-		for(Vector v : testingData) {
-			knn = new kNearestNeighbor(v, trainingData, 3);
-			if(knn.predictClassifier() == v.classifier)
-				numCorrect += 1;
+		for(int k = 1; k <= 99; k+= 2) {
+			int numCorrect = 0;
+			for(Vector v : testingData) {
+				knn = new kNearestNeighbor(v, trainingData, k);
+				if(knn.predictClassifier() == v.classifier)
+					numCorrect += 1;
+			}
+			System.out.println("With k = " + k + 
+							   " the program had " + numCorrect + 
+							   " out of " + testingData.size() + " correct.");
 		}
-		System.out.println("The program had " + numCorrect + " out of " + testingData.size() + " correct.");
 	}
 }

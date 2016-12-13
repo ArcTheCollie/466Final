@@ -14,15 +14,19 @@ public class kNearestNeighbor {
 	
 	/*Compute all the distances from the base to the vectors, and predict the output based on the
 	most common classifier. */
-	public void predictClassifier() {
+	public double predictClassifier() {
 		/*start by computing the distances*/
 		for(Vector v : vectors) {
 			v.computeDistance(base.points);
 		}
 		Collections.sort(vectors);
 		
+		Double classifier = 0.0;
 		for(int i = 0; i < k; i++) {
-			System.out.println("Distance: " + vectors.get(i).distance + " Class: " + vectors.get(i).classifier);
+			if(vectors.get(i).classifier == 1.0)
+				classifier += 1;
 		}
+		
+		return (classifier >= (k/2)) ? 1.0 : 0.0;
 	}
 }
